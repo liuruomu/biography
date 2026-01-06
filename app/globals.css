@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -23,4 +23,96 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+/* --- 1. 烫金字体特效 (Gold Foil) --- */
+.text-gold {
+  background: linear-gradient(
+    to bottom right,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fbf5b7,
+    #aa771c
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* --- 2. 磨砂黑皮革纹理 (封面背景) --- */
+.bg-leather {
+  background-color: #1a1a1a;
+  background-image: url('https://www.transparenttextures.com/patterns/black-scales.png');
+  /* 或者使用更细腻的噪点 */
+  /* background-image: url("https://www.transparenttextures.com/patterns/stardust.png"); */
+}
+
+/* --- 3. 高级道林纸纹理 (内页背景) --- */
+.bg-paper-luxury {
+  background-color: #fdfbf7;
+  background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+}
+
+/* --- 4. 首字下沉 (Drop Cap) --- */
+.drop-cap {
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.8;
+  padding-right: 0.5rem;
+  padding-top: 0.2rem;
+  font-family: var(--font-ma-shan), 'KaiTi', serif;
+  color: #8b5a2b; /* 深棕色 */
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- 1. 竖排文字 (核心修复：解决书名换行问题) --- */
+.writing-vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.3em; /* 字间距拉大，更有古籍感 */
+}
+
+/* --- 2. 烫金字体特效 --- */
+.text-gold {
+  background: linear-gradient(
+    to bottom right,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fbf5b7,
+    #aa771c
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* --- 3. 磨砂黑皮革纹理 (封面背景) --- */
+.bg-leather {
+  background-color: #1a1a1a;
+  background-image: url('https://www.transparenttextures.com/patterns/black-scales.png');
+}
+
+/* --- 4. 首字下沉 --- */
+.drop-cap {
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.8;
+  padding-right: 0.5rem;
+  padding-top: 0.2rem;
+  font-family: var(--font-ma-shan), 'KaiTi', serif;
+  color: #8b5a2b;
+}
+
+/* --- 5. 字体兜底 (解决截图字体丑的问题) --- */
+.font-serif {
+  font-family: var(--font-noto-serif), 'Songti SC', 'SimSun', 'Times New Roman',
+    serif;
+}
+.font-calligraphy {
+  font-family: var(--font-ma-shan), 'KaiTi', 'STKaiti', 'LiSu', serif;
 }

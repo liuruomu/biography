@@ -1,65 +1,60 @@
-import Image from "next/image";
+import FlipBook from './components/FlipBook';
+import { BookPageData } from '@/types';
 
-export default function Home() {
+// 获取当前环境 URL
+function getBaseUrl() {
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return 'http://localhost:3000';
+}
+
+// 真实 HTTP 请求后端 API
+async function getBookDataViaAPI(): Promise<BookPageData[]> {
+  const apiUrl = `${getBaseUrl()}/api/book`;
+  console.log(`🌍 Fetching: ${apiUrl}`);
+
+  try {
+    const res = await fetch(apiUrl, { cache: 'no-store' }); // 不缓存，确保实时
+    if (!res.ok) throw new Error('Failed to fetch');
+    const json = await res.json();
+    return json.data || [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const bookData = await getBookDataViaAPI();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    // ★ 核心修复：容器占满全屏，内容水平垂直居中
+    // 这样书打开变宽时，会自动重新计算中心点
+    <main className="w-full h-screen flex flex-col items-center justify-center bg-[#1a1a1a] relative overflow-hidden">
+      {/* 木纹背景 */}
+      <div
+        className="absolute inset-0 z-0 opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: `url("https://www.transparenttextures.com/patterns/wood-pattern.png")`,
+          backgroundSize: '300px',
+        }}
+      ></div>
+
+      <div className="z-10 text-center mb-6">
+        <h1 className="text-[#d4c4a8] text-opacity-80 text-lg font-serif tracking-[0.3em] uppercase drop-shadow-md">
+          Private Biography Collection
+        </h1>
+      </div>
+
+      {/* 书本容器：padding-y 留出空间 */}
+      <div className="z-10 w-full flex items-center justify-center py-4">
+        {bookData.length > 0 ? (
+          <FlipBook data={bookData} />
+        ) : (
+          <div className="text-[#d4c4a8] animate-pulse">
+            Loading Biography...
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
