@@ -4,7 +4,7 @@ export const DB_BOOK_CONTENT: BookPageData[] = [
   {
     type: 'cover',
     title: '沉默的麦穗',
-    subtitle: '一位父亲的五十年风雨',
+    subtitle: '一位父亲的七十年风雨',
     author: '献给父亲 刘仁飞',
     year: '2026 · 珍藏版',
   },
