@@ -1,36 +1,27 @@
+// app/page.tsx
+
 import FlipBook from './components/FlipBook';
+// 👇 关键改变：不再引入 fetch 相关的逻辑，直接引入后端逻辑
+import { getBookContent } from '@/lib/db';
 import { BookPageData } from '@/types';
 
-// 获取当前环境 URL
-function getBaseUrl() {
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return 'http://localhost:3000';
-}
+// 这个函数以前是 fetch，现在改成直接调数据库方法
+function getBookData(): BookPageData[] {
+  console.log('🌍 [Server]正在直接从数据库/文件读取数据...');
 
-// 真实 HTTP 请求后端 API
-async function getBookDataViaAPI(): Promise<BookPageData[]> {
-  const apiUrl = `${getBaseUrl()}/api/book`;
-  console.log(`🌍 Fetching: ${apiUrl}`);
-
-  try {
-    const res = await fetch(apiUrl, { cache: 'no-store' }); // 不缓存，确保实时
-    if (!res.ok) throw new Error('Failed to fetch');
-    const json = await res.json();
-    return json.data || [];
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  // 直接调用 lib/db.ts 里的函数
+  // 这在 Next.js 服务端组件中是标准且最高效的做法
+  const data = getBookContent();
+  return data;
 }
 
 export default async function Home() {
-  const bookData = await getBookDataViaAPI();
+  // 获取数据
+  const bookData = await getBookData();
 
   return (
-    // ★ 核心修复：容器占满全屏，内容水平垂直居中
-    // 这样书打开变宽时，会自动重新计算中心点
     <main className="w-full h-screen flex flex-col items-center justify-center bg-[#1a1a1a] relative overflow-hidden">
-      {/* 木纹背景 */}
+      {/* 背景纹理 */}
       <div
         className="absolute inset-0 z-0 opacity-40 pointer-events-none"
         style={{
@@ -45,7 +36,6 @@ export default async function Home() {
         </h1>
       </div>
 
-      {/* 书本容器：padding-y 留出空间 */}
       <div className="z-10 w-full flex items-center justify-center py-4">
         {bookData.length > 0 ? (
           <FlipBook data={bookData} />

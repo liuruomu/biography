@@ -868,6 +868,8 @@ export const DB_BOOK_CONTENT: BookPageData[] = [
   },
 ];
 
-export const getBookContent = async (): Promise<BookPageData[]> => {
-  return new Promise((resolve) => resolve(DB_BOOK_CONTENT));
+export const getBookContent = (): BookPageData[] => {
+  console.log('🌍 [Server] 读取静态常量数据');
+  // 类型断言确保匹配（如果DB_BOOK_CONTENT格式正确，可省略）
+  return DB_BOOK_CONTENT as BookPageData[];
 };
