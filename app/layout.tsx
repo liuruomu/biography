@@ -22,7 +22,7 @@ const mashan = Ma_Shan_Zheng({
 
 export const metadata: Metadata = {
   title: '沉默的麦穗 - 父亲传记',
-  description: '一位父亲的五十年风雨',
+  description: '一位父亲的七十年风雨',
 };
 
 export default function RootLayout({

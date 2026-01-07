@@ -1,20 +1,38 @@
-// types/index.ts
+// types.ts
 
-// 章节内容的类型定义
-export interface BookPageData {
-  type: 'cover' | 'text' | 'image' | 'back-cover';
+// 1. 输入数据：原始 JSON 结构
+export interface RawChapter {
   title: string;
-  subtitle?: string; // 封面副标题
-  author?: string; // 作者
-  year?: string; // 年份
-  chapter?: string; // 章节名 (Chapter 1)
-  text?: string[]; // 正文段落
-  images?: { caption: string; url?: string; placeholder?: string }[];
-  cta?: string; // 封底按钮文字
+  paragraphs: string[];
 }
-// API 返回的标准格式
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  message?: string;
+
+export interface RawBookData {
+  title: string;
+  subtitle: string;
+  author: string;
+  chapters: RawChapter[];
+  backCover: {
+    title: string;
+    cta: string;
+  };
+}
+
+// 2. 输出数据：计算后的页面结构
+export type PageType = 'cover' | 'text' | 'image' | 'back-cover';
+
+export interface RenderedPage {
+  type: PageType;
+  // 通用字段
+  pageNumber?: number;
+
+  // 封面/封底用
+  mainTitle?: string;
+  subTitle?: string;
+  author?: string;
+  cta?: string;
+
+  // 正文页用
+  chapterTitle?: string; // 页眉显示的当前章节名
+  lines?: string[]; // 这一页要显示的行（已经是切分好的）
+  isChapterStart?: boolean; // 是否是章节的第一页（用于显示大标题）
 }

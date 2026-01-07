@@ -116,3 +116,18 @@ body {
 .font-calligraphy {
   font-family: var(--font-ma-shan), 'KaiTi', 'STKaiti', 'LiSu', serif;
 }
+.page-hardware-accelerated {
+  /* 开启硬件加速 */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+
+  /* 隐藏背面，防止翻转时透视造成的闪烁 */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* 优化渲染性能 */
+  will-change: transform;
+
+  /* 确保背景色不透明 */
+  background-color: #fdfbf7;
+}
