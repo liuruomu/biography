@@ -863,7 +863,7 @@ export const DB_BOOK_CONTENT: BookPageData[] = [
   },
   {
     type: 'back-cover',
-    title: '让每一个平凡的生命\n都拥有被记录的尊严',
+    title: '岁月不语\n笔墨为证',
     cta: '联系主编 · 开启定制',
   },
 ];

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 // 1. 引入谷歌字体
 import { Noto_Serif_SC, Ma_Shan_Zheng } from 'next/font/google';
 import './globals.css';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 // 2. 配置宋体 (正文用)
 const notoserif = Noto_Serif_SC({
@@ -34,6 +35,7 @@ export default function RootLayout({
       {/* 4. 将字体变量注入到 body 中 */}
       <body className={`${notoserif.variable} ${mashan.variable} antialiased`}>
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );

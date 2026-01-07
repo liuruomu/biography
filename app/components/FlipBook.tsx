@@ -21,7 +21,8 @@ export default function FlipBook({ data }: FlipBookProps) {
     if (!isFirstParagraph) return false;
     const firstChar = text.charAt(0);
     // 正则匹配：如果是 【 [ ( “ ' 等标点，返回 false
-    if (/^[【\[（(“"‘']/.test(firstChar)) return false;
+    // 新增对《的匹配，覆盖所有指定开头字符
+    if (/^[【\[（(“"‘'《]/.test(firstChar)) return false;
     return true;
   };
   return (
